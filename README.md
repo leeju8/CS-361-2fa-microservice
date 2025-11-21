@@ -75,4 +75,4 @@ curl -X POST http://localhost:8090/verify \
 
 ### UML Sequence Diagram
 
-<img width="376" height="330" alt="image" src="https://github.com/user-attachments/assets/4c5b6df9-95ad-4524-b387-0c1998700d88" />
+<img width="420" height="440" alt="image" src="https://github.com/user-attachments/assets/ea0ee4db-ef66-49c0-b263-45a93bbc79fa" />
