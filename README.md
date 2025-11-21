@@ -5,6 +5,7 @@ A simple microservice that generates TOTP secrets and verifies 2FA codes.
 # Running the Service
 
 ```bash
+go mod tidy
 go run main.go
 ```
 
