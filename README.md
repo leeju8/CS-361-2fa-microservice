@@ -11,7 +11,7 @@ go run main.go
 
 The service will run on `http://localhost:8090`
 
-# Requesting Data
+# Requesting and Receiving Data
 
 ### Generate 2FA Secret
 
