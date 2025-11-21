@@ -4,7 +4,9 @@ A simple microservice that generates TOTP secrets and verifies 2FA codes.
 
 # Running the Service
 
+```bash
 go run main.go
+```
 
 The service will run on `http://localhost:8090`
 
@@ -14,7 +16,7 @@ The service will run on `http://localhost:8090`
 
 **Endpoint:** `POST /generate`
 
-**Request:** Send a POST request with an empty body
+**Request:** Client sends a POST request with an empty body
 
 **Example:**
 
@@ -22,11 +24,27 @@ The service will run on `http://localhost:8090`
 curl -X POST http://localhost:8090/generate
 ```
 
+**Response (Success):** Client receives 200 OK Status Code and JSON body containing:
+
+```json
+{
+  "secret": "JBSWY3DPEHPK3PXP",
+  "qr_code": "base64_encoded_png_image",
+  "url": "otpauth://totp/MyApp:user@example.com?secret=JBSWY3DPEHPK3PXP&issuer=MyApp"
+}
+```
+
+- `secret`: Secret needed for verification. Store this value
+- `qr_code`: Base64 encoded PNG image to scan with authenticator app
+- `url`: The otpauth URL (can be used instead of QR code)
+
+**Response (Failure):** Client receives 400 BAD REQUEST Status Code on invalid method request and 500 INTERNAL SERVER ERROR on server failure
+
 ### Verify 2FA Code
 
 **Endpoint:** `POST /verify`
 
-**Request:** Send a POST request with JSON body containing:
+**Request:** Client sends a POST request with JSON body containing:
 
 - `secret`: The TOTP secret (returned from /generate)
 - `code`: The 6-digit code from authenticator app
@@ -42,23 +60,7 @@ curl -X POST http://localhost:8090/verify \
   }'
 ```
 
-# Receiving Data
-
-### Generate Response
-
-```json
-{
-  "secret": "JBSWY3DPEHPK3PXP",
-  "qr_code": "base64_encoded_png_image",
-  "url": "otpauth://totp/MyApp:user@example.com?secret=JBSWY3DPEHPK3PXP&issuer=MyApp"
-}
-```
-
-- `secret`: Secret needed for verification. Store this value
-- `qr_code`: Base64 encoded PNG image to scan with authenticator app
-- `url`: The otpauth URL (can be used instead of QR code)
-
-### Verify Response
+**Response (Success):** Client receives 200 OK Status Code and JSON body containing:
 
 ```json
 {
@@ -67,6 +69,8 @@ curl -X POST http://localhost:8090/verify \
 ```
 
 - `valid`: `true` if the code is correct, `false` otherwise
+
+**Response (Failure):** Client receives 400 BAD REQUEST Status Code on invalid method request and 500 INTERNAL SERVER ERROR on server failure
 
 ### UML Sequence Diagram
 
